@@ -1,5 +1,8 @@
 # James Sharman Pipelined CPU in Verilog
-This project doesn't have any content yet. It's just a collection of notes. It will be an Verilog implementation for FPGA of James Sharman's Pipelined CPU.
+**_This project doesn't have any content yet. It's just a collection of notes._** 
+
+It will be an Verilog implementation for FPGA of James Sharman's Pipelined CPU.
+
 Below is a list of useful resources:
 - [First video in the series](https://www.youtube.com/watch?v=KEwL2P8IGaA) and there are many, many after it.
 - [EasyEDA schematics of the build](https://easyeda.com/weirdboyjim)
