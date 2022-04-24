@@ -18,7 +18,7 @@ module MainMemory64Shadow (
 	input	CopyClock,
 
 	inout	[15:0] 	Addr,
-	inout	[15:0]	MEMDATA,
+	inout	[7:0]	MEMDATA,
 	
 	// Mem Inputs
 	input			MemBridge_Load,
