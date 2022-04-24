@@ -13,7 +13,7 @@ Module notes:
 	
 */
 
-module ConstantRegisterV2 (
+module TransferRegisterV1 (
 	inout	[7:0] 	MainBus,	// system bus
 	inout	[15:0]	Addr,		// addressb bus
 	inout	[15:0]	Bus,		// transfer bus

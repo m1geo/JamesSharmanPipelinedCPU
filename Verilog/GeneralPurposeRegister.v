@@ -13,7 +13,7 @@ Module notes:
 	
 */
 
-module ConstantRegisterV2 (
+module GeneralPurposeRegister (
 	inout	[7:0] 	MainBus,
 	inout	[7:0]	LHSBus,
 	inout	[7:0]	RHSBus,

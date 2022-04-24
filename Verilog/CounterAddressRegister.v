@@ -13,7 +13,7 @@ Module notes:
 	
 */
 
-module ConstantRegisterV2 (
+module CounterAddressRegister (
 	inout	[15:0] 	Addr,
 	inout	[15:0]	Bus,
 	inout	[7:0]	RHSBus,
