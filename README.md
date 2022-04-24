@@ -1,5 +1,5 @@
 # James Sharman Pipelined CPU in Verilog
-*_This project doesn't have any content yet. It's just a collection of notes._* 
+**_This project doesn't have any content yet. It's just a collection of notes._** 
 
 It will be an Verilog implementation for FPGA of James Sharman's Pipelined CPU.
 
