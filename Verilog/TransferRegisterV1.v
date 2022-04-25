@@ -24,7 +24,7 @@ module TransferRegisterV1 (
 	input			l_tx,		// no idea on the polarity of these (check IC datasheets)
 	input			a_tx_addr,	// 
 	input			a_tx_xfer,	// 
-	input			a_tx_mode,	// 
+	input			a_tx_mode	// 
 );
 
 	// main code goes here!

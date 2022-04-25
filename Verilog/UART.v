@@ -13,7 +13,7 @@ Module notes:
 	
 */
 
-module ALU_Control (
+module UART (
 	input			UartClock,
 
 	inout	[7:0]	MainBus,
@@ -34,9 +34,7 @@ module ALU_Control (
 	
 	// FIFO_STATUS2
 	inout	[3:0]	TFcount,
-	inout	[3:0]	RFcount,
-	
-
+	inout	[3:0]	RFcount
 );
 
 	// main code goes here!

@@ -20,7 +20,7 @@ module MemBridge (
 	
 	// Mem Inputs
 	input			MemBridge_Assert,
-	input			MemBridge_Direction,
+	input			MemBridge_Direction
 
 );
 

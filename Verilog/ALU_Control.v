@@ -14,7 +14,7 @@ Module notes:
 */
 
 module ALU_Control (
-	input			Clock
+	input			Clock,
 
 	// ALU IO
 	output 			AluClock,
@@ -24,7 +24,7 @@ module ALU_Control (
 	output			AC0_RHS0,
 	output			AC1_RHS1,
 	output			AC2_RHS2,
-	output			AC3_RHS3
+	output			AC3_RHS3,
 	output			AC4_LHS0,
 	output			AC5_LHS1,
 	output			AC6_CS0,
@@ -34,7 +34,7 @@ module ALU_Control (
 	input			Pipe1Out_4_ALUOP0,
 	input			Pipe1Out_5_ALUOP1,
 	input			Pipe1Out_6_ALUOP2,
-	input			Pipe1Out_7_ALUOP3,
+	input			Pipe1Out_7_ALUOP3
 );
 
 	// main code goes here!

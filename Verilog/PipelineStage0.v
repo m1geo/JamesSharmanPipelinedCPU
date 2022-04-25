@@ -25,7 +25,7 @@ module PipelineStage0 (
 	output			Pipe0Out_1_IncPCRA1,
 	
 	// flag inputs
-	input			Flags_5_PCRA_Flip,
+	input			Flags_5_PCRA_Flip
 );
 
 	// main code goes here!
