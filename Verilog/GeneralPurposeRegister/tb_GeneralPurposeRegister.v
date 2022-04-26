@@ -7,7 +7,7 @@ Project Source:		https://github.com/m1geo/JamesSharmanPipelinedCPU
 Verilog Rev:		1.0 (2022-04-26)
 
 Module notes:
-    Testbench for V2 general purpose register 
+    Testbench for V1 general purpose register 
     
 */
 
