@@ -1,13 +1,13 @@
 /*
 
-Name:				General Purpose Register V1 - TESTBENCH
+Name:				Memory Bridge - TESTBENCH
 
 FPGA/Verilog: 		George Smart (@m1geo) http://www.george-smart.co.uk
 Project Source:		https://github.com/m1geo/JamesSharmanPipelinedCPU
-Verilog Rev:		1.0 (2022-04-26)
+Verilog Rev:		1.0 (2022-04-27)
 
 Module notes:
-    Testbench for V2 general purpose register 
+    Testbench for Memory Bridge 
     
 */
 
