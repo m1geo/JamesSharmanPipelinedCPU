@@ -14,7 +14,7 @@ Module notes:
 // unimportant timescale.
 `timescale 1 ns/10 ps
 
-module tb_GeneralPurposeRegister;
+module tb_MemBridge;
 localparam period = 10; // period is 10 nanoseconds
 
 reg        tb_d_membridge_n;

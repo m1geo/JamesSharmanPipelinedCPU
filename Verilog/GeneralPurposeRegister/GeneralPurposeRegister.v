@@ -7,6 +7,7 @@ Designer:			James Sharman (weirdboyjim)
 
 FPGA/Verilog: 		George Smart (@m1geo) http://www.george-smart.co.uk
 Project Source:		https://github.com/m1geo/JamesSharmanPipelinedCPU
+Verilog Rev:		1.0 (2022-04-27)
 
 Module notes:
     Video:          https://www.youtube.com/watch?v=kz42fFKgvHE
