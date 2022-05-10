@@ -1,8 +1,7 @@
-# James Sharman Pipelined CPU in Verilog
-**_This project doesn't have any content yet. It's just a collection of notes._** 
+# James Sharman 8-bit Pipelined CPU in Verilog
+***This project doesn't work yet. It's a work in progress.***
 
-It will be an Verilog implementation for FPGA of James Sharman's Pipelined CPU.
-
+It will be an Verilog implementation for FPGA of James Sharman's 8-bit Pipelined CPU.
 Below is a list of useful resources:
 - [First video in the series](https://www.youtube.com/watch?v=KEwL2P8IGaA) and there are many, many after it.
 - [EasyEDA schematics of the build](https://easyeda.com/weirdboyjim)
@@ -11,7 +10,7 @@ Below is a list of useful resources:
   - [Fork of above with extra bits](https://github.com/davidclifford/CSCvon8)
 
 ## Design principles
-I will try to make things as modular as James has. My ideas would be to model the ICs James uses (or borrow them from [here](https://github.com/TimRudy/ice-chips-verilog/blob/master/device-index.md)) and the build modules for each of the PCBs so the Verilog follows the same hierarchy as the PCBs.
+Rather than model the design chip-by-chip, I have decided to replicate the functionality of each board in Verilog. Of course, all of the LEDs have been removed.
 
 Where possible, clocks should come in from the top level, so that they're easily replaced for different vendors. Will probably target [Xilinx Arty A7 platform](https://www.xilinx.com/products/boards-and-kits/arty.html), but will look into [Lattice MachXO2-7000HE devboard](https://www.latticesemi.com/products/developmentboardsandkits/machxo2breakoutboard) too.
 
