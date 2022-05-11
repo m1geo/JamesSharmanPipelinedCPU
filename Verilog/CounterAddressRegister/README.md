@@ -1,5 +1,5 @@
 # James Sharman Pipelined CPU in Verilog
-## Memory Bridge
+## Counter Address Register
 Counter/Address Register. 16 bit loadable counter. Load from Bus on falling LOAD_n.
 Assert to XFER bus on low a_bus_n. Assert to ADDR bus on low a_addr_n.
 Data is intentionally doubly registered, as it is on the schematic.
