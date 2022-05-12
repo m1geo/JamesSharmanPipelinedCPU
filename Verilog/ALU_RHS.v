@@ -10,6 +10,8 @@ Project Source:		https://github.com/m1geo/JamesSharmanPipelinedCPU
 
 Module notes:
 	Just an empty module with ports.
+	Video1:		https://youtu.be/pMV_0qT0uY0 (design of logic)
+	Video2:		https://www.youtube.com/watch?v=3k-Batj7t-0 (design of PCB + register)
 	
 */
 
