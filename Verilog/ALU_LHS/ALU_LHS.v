@@ -29,8 +29,8 @@ module ALU_LHS (
 
 	// C0 (unchanged)
 	wire [7:0] C0_da = LHS;
+	wire       C0_co = 1'b0; // PCB Jumper "NC_CIr" (fitted in Video2 21:22)
 	//wire       C0_co = LCarryIn; // PCB Jumper "NC_CIn"
-	wire       C0_co = 1'b0; // PCB Jumper "NC_CIr" (fitted in Video2 21:13)
 
 	// C1 (shift left <--)
 	wire [7:0] C1_da  = {LHS[6:0], LCarryIn};
@@ -53,8 +53,8 @@ module ALU_LHS (
 	assign mux_co = AC5_LHS1 ? (AC4_LHS0 ? C3_co : C2_co) : (AC4_LHS0 ? C1_co : C0_co);
 	
 	// registers on the LHS PCB (on control breadboard)
-	reg [7:0] reg_da;
-	reg       reg_co;
+	reg [7:0] reg_da = 0;
+	reg       reg_co = 0;
 	always @ (posedge AluClock) begin
 		reg_da <= mux_da;
 		reg_co <= mux_co;
