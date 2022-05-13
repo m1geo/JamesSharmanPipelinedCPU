@@ -8,7 +8,6 @@ Verilog Rev:		1.0 (2022-05-13)
 
 Module notes:
     Testbench for ALU LHS
-    The RTL has a bufgce and ANDed AluClock output (based on AluActive). Simulation shows a missing cycle on bufgce but is the right way to clock-gate on FPGA. Likely a weirdness in simulation 'perfection'.
 */
 
 // unimportant timescale.
