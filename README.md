@@ -10,12 +10,12 @@ Below is a list of useful resources:
   - [Fork of above with extra bits](https://github.com/davidclifford/CSCvon8)
 
 ## Design principles
-Rather than model the design chip-by-chip, I have decided to replicate the functionality of each board in Verilog. Of course, all of the LEDs have been removed.
+Rather than model the design chip-by-chip, I have decided to replicate the functionality of each board in Verilog. Of course, all of the LEDs have been removed. They were the best bit!
 
-Where possible, clocks should come in from the top level, so that they're easily replaced for different vendors. Will probably target [Xilinx Arty A7 platform](https://www.xilinx.com/products/boards-and-kits/arty.html), but will look into [Lattice MachXO2-7000HE devboard](https://www.latticesemi.com/products/developmentboardsandkits/machxo2breakoutboard) too.
+Probably target [Xilinx Arty A7 platform](https://www.xilinx.com/products/boards-and-kits/arty.html), and will look into [Lattice MachXO2-7000HE devboard](https://www.latticesemi.com/products/developmentboardsandkits/machxo2breakoutboard) too.
 
-## 74-series ICs Used
-To start this, I wanted to scour the design to see what 74-series logic ICs James uses. This list below all have models or something looking likely to be useful:
+## Useful References (Datasheets & Verilog)
+To start this, I wanted to scour the design to see what 74-series logic ICs James uses:
 - 74HCT00 (Quad 2-input NAND gate)
 - 74HCT04 (Hex inverter)
 - 74HCT08 (Quad 2-input AND gate)
@@ -32,7 +32,8 @@ The list below are devices used which I do not yet have a model for:
 - 74HCT165 (no model - 8-bit serial or parallel-in/serial-out shift register [[datasheet](https://assets.nexperia.com/documents/data-sheet/74HC_HCT165.pdf)])
 - 74HCT540 (no model - Octal buffer/line driver; 3-state; inverting [[datasheet](https://assets.nexperia.com/documents/data-sheet/74HC_HCT540.pdf)])
 - 74HCT541 (no model - Octal buffer/line driver; 3-state [[datasheet](https://assets.nexperia.com/documents/data-sheet/74HC_HCT541.pdf)])
+- 74HCT283 adder
 
-Finally, we'll need some RAM and ROM. James uses the following:
-- 28C256 ([model](https://github.com/DoctorWkt/CSCvon8/blob/master/rom.v) - EEPROM 32Kx8 - *will need ROM files*)
+Finally, we'll need some RAM and ROM. James uses the following. James has shared the source files & code:
+- 28C256 ([model](https://github.com/DoctorWkt/CSCvon8/blob/master/rom.v) - PROM 32Kx8)
 - LY62256SL-70LL ([model](https://github.com/DoctorWkt/CSCvon8/blob/master/ram.v) - SRAM 32Kx8)
