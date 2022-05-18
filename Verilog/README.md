@@ -3,4 +3,6 @@ This Verilog folder contains unwritten Verilog files and subfolders with a PCB m
 
 ## Notes
 Please note; the following modules have special notes:
-- ALU_Output (ALU_Result) has not been tested.
+- ALU_Output (ALU_Result) is untested.
+- BusControl is untested
+- Pipeline Stage 0 is untested
