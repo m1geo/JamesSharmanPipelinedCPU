@@ -6,3 +6,4 @@ Please note; the following modules have special notes:
 - ALU_Output (ALU_Result) is untested.
 - BusControl is untested
 - Pipeline Stage 0 is untested
+- Pipeline Stage 1 is untested
