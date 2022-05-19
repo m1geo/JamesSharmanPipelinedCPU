@@ -11,8 +11,8 @@ Functions provided:
 - (AC[3:0]=0xE) LHS OR RHS
 - (AC[3:0]=0x6) LHS XOR RHS
 
-![Simulation Waveform](https://raw.githubusercontent.com/m1geo/JamesSharmanPipelinedCPU/main/Verilog/ALU_RHS/ALU_RHS_sim.png "Simulation Waveform")
+![Simulation Waveform](https://raw.githubusercontent.com/m1geo/JamesSharmanPipelinedCPU/main/Verilog/ALU/ALU_RHS/ALU_RHS_sim.png "Simulation Waveform")
 
 A crudely annotated cross check shows the functionality of the AC[3:0] signals to match those [shown in the video](https://youtu.be/pMV_0qT0uY0?t=801).
 
-![Simulation Waveform](https://raw.githubusercontent.com/m1geo/JamesSharmanPipelinedCPU/main/Verilog/ALU_RHS/ALU_RHS_checked_sim.png "Simulation Waveform")
+![Simulation Waveform](https://raw.githubusercontent.com/m1geo/JamesSharmanPipelinedCPU/main/Verilog/ALU/ALU_RHS/ALU_RHS_checked_sim.png "Simulation Waveform")
