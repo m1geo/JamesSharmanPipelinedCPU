@@ -7,12 +7,10 @@ Designer:			James Sharman (weirdboyjim)
 
 FPGA/Verilog: 		George Smart (@m1geo) http://www.george-smart.co.uk
 Project Source:		https://github.com/m1geo/JamesSharmanPipelinedCPU
-Verilog Rev:		1.0 (2022-05-15)
+Verilog Rev:		1.0 (2022-05-19)
 
 Module notes:
 	Video:			https://www.youtube.com/watch?v=B59fb3hpiK8
-	NOT TESTED!
-	
 */
 
 module BusControl (
@@ -46,9 +44,11 @@ module BusControl (
 	output 			Reg_Const_LoadMem,
 	output 			Reg_Const_Assert,
 	
-	// SIL8 PCRA0
+	// Register Shared Control Lines
 	output 			AddrRegClock,
 	output 			AddrRegClear,
+	
+	// SIL8 PCRA0
 	output 			Reg_PCRA0_Dec,
 	output 			Reg_PCRA0_Inc,
 	output 			Reg_PCRA0_Load,
@@ -56,8 +56,6 @@ module BusControl (
 	output 			Reg_PCRA0_AXfer,
 	
 	// SIL8 PCRA1
-	output 			AddrRegClock,
-	output 			AddrRegClear,
 	output 			Reg_PCRA1_Dec,
 	output 			Reg_PCRA1_Inc,
 	output 			Reg_PCRA1_Load,
@@ -65,8 +63,6 @@ module BusControl (
 	output 			Reg_PCRA1_AXfer,
 	
 	// SIL8 SP
-	output 			AddrRegClock,
-	output 			AddrRegClear,
 	output 			Reg_SP_Dec,
 	output 			Reg_SP_Inc,
 	output 			Reg_SP_Load,
@@ -74,8 +70,6 @@ module BusControl (
 	output 			Reg_SP_AXfer,
 	
 	// SIL8 SI
-	output 			AddrRegClock,
-	output 			AddrRegClear,
 	output 			Reg_SI_Dec,
 	output 			Reg_SI_Inc,
 	output 			Reg_SI_Load,
@@ -83,8 +77,6 @@ module BusControl (
 	output 			Reg_SI_AXfer,
 	
 	// SIL8 DI
-	output 			AddrRegClock,
-	output 			AddrRegClear,
 	output 			Reg_DI_Dec,
 	output 			Reg_DI_Inc,
 	output 			Reg_DI_Load,
@@ -152,13 +144,12 @@ module BusControl (
 	// BusControl U1 Inverter
 	assign AddrRegClear = ~Reset_In; // AddrRegClear is active high
 	assign AddrRegClock = Clock_In; // double inverted in hardware (bad form)
-	assign   = ~Clock_In;
 	
 	// GPR LHS Decode
 	assign {Reg_D_LHS, Reg_C_LHS, Reg_B_LHS, Reg_A_LHS} = ~(1 << LHS); // one cold
 	
 	// GPR RHS Decode
-	assign {Reg_D_RHS, Reg_C_RHS, Reg_B_RHS, Reg_A_RHS} = ~(1 << LHS); // one cold
+	assign {Reg_D_RHS, Reg_C_RHS, Reg_B_RHS, Reg_A_RHS} = ~(1 << RHS); // one cold
 	
 	// Bus Assert Decode (always enabled)
 	wire adummy0;
@@ -176,7 +167,7 @@ module BusControl (
 			(Clock_In) ? ~(1 << Bus_Load) : 16'hFFFF; // one cold when Clock_In high, else all High.
 
 	// Bus MemBridge Direction - done with a selector on PCB
-	assign MemBridge_Load = ~&Bus_Load; // NAND Bus_Load (when all high, output low)
+	assign MemBridge_Direction = ~&Bus_Load; // NAND Bus_Load (when all high, output low)
 
 	// PCRA Decode - PCB has bug where enables left floating
 	wire [1:0] pcradummy;
@@ -204,13 +195,3 @@ module BusControl (
 			(Clock_In) ? ~(1 << XferLoadDec) : 16'hFFFF;
 	
 endmodule
-
-/*
-// May have to use a proper one hot block to ensure we get proper synthesis.
-module one_cold_decoder_2_4 (
-	input	[1:0]	a,
-	output	[3:0]	s,
-);
-	assign s = ~(1 << a); // one hot	
-endmodule
-*/

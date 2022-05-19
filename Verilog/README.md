@@ -3,7 +3,6 @@ This Verilog folder contains unwritten Verilog files and subfolders with a PCB m
 
 ## Notes
 Please note; the following modules have special notes:
-- BusControl is untested
 - Pipeline Stage 0 is untested
 - Pipeline Stage 1 is untested
 - Pipeline Stage 2 is untested
