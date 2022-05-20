@@ -3,3 +3,7 @@ ROMs/
 
 JS_8bPL_CPU/**
 JS_8bPL_CPU/
+
+*.rom
+*.bin
+*.mem

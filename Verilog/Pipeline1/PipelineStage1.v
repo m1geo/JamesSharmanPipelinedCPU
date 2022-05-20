@@ -13,6 +13,7 @@ Module notes:
 */
 
 module PipelineStage1 (
+	// PCB delays ClockIn by two NAND inverters to Clock. This doesn't.	
 	input			ClockIn,
 	input			BusRequest,
 	input	[7:0] 	PipeIn,
@@ -46,8 +47,10 @@ module PipelineStage1 (
 	input			Flags_6_Reset
 );
 
-	// PCB delays ClockIn by two NAND inverters to Clock. This doesn't.
-	
+	// Paths to ROM Files
+	localparam PipeRom1A_File = "Pipe1A.mem";
+	localparam PipeRom1B_File = "Pipe1B.mem";
+
 	// Rom elements
 	reg [7:0] RomA [0:32767];
 	reg [7:0] RomB [0:32767];
@@ -67,7 +70,7 @@ module PipelineStage1 (
 	reg [7:0] LatchedRomB;
 	reg [7:0] PipeLatch;
 	always @ (posedge ClockIn) begin
-		PipeLatch <= MEMDATA;
+		PipeLatch <= PipeIn;
 		LatchedRomA <= RomA[addr]; // flipped twice in hw
 		LatchedRomB <= RomB[addr]; // flipped twice in hw
 	end
