@@ -35,7 +35,7 @@ module PipelineStage0 (
 	end
 	
 	// MUXes to select state output
-	assign PipeOut = FetchSurpress ? (BusRequest ? PipeLatch : 8'b0') : (BusRequest ? 8'b0 : MEMDATA);
+	assign PipeOut = FetchSurpress ? (BusRequest ? PipeLatch : 8'b0) : (BusRequest ? 8'b0 : MEMDATA);
 	
 	assign Pipe0Out_0_IncPCRA0 = Flags_5_PCRA_Flip;
 	assign Pipe0Out_1_IncPCRA1 = BusRequest;
