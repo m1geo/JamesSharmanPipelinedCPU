@@ -17,8 +17,8 @@ Module notes:
 
 module Pipeline (
 	input			ClockIn,
-	input			BusRequest,
-	input			FetchSurpress,
+	//output			BusRequest,
+	//output			FetchSurpress,
 	input	[7:0] 	MEMDATA,
 	output	[7:0]	PipeOut,
 		
@@ -31,12 +31,16 @@ module Pipeline (
 	input	[6:0]	Flags
 );
 
+	// Not sure if these are used 
+	//assign FetchSurpress = Pipe1Out[15];
+	//assign BusRequest = Pipe2Out[13];
+
 	// Pipeline Stage 0
 	wire [7:0] PipeOut0In1;
 	PipelineStage0 pls0 (
 		.ClockIn(ClockIn), // in
-		.BusRequest(BusRequest), // in
-		.FetchSurpress(FetchSurpress), // in
+		.BusRequest(Pipe2Out[13]), // in from Stage 2
+		.FetchSurpress(Pipe1Out[15]), // in from Stage 1
 		.MEMDATA(MEMDATA), // in [7:0]
 		.PipeOut(PipeOut0In1), // out [7:0]
 		
@@ -52,7 +56,7 @@ module Pipeline (
 	wire [7:0] PipeOut1In2;
 	PipelineStage1 pls1 (
 		.ClockIn(ClockIn), // in
-		.BusRequest(BusRequest), // in
+		.BusRequest(Pipe2Out[13]), // in from Stage 2
 		.PipeIn(PipeOut0In1), // in [7:0]
 		.PipeOut(PipeOut1In2), // out [7:0]
 	
@@ -81,7 +85,7 @@ module Pipeline (
 		.Pipe1Out_12_XA0(Pipe1Out[12]),
 		.Pipe1Out_13_XA1(Pipe1Out[13]),
 		.Pipe1Out_14_XA2(Pipe1Out[14]),
-		.Pipe1Out_15_FetchSurpress(Pipe1Out[15])
+		.Pipe1Out_15_FetchSurpress(Pipe1Out[15]) // to to Stage 0, too
 	);
 
 	// Pipeline Stage 2
@@ -113,7 +117,7 @@ module Pipeline (
 		.Pipe2Out_10_Addr0(Pipe2Out[10]),
 		.Pipe2Out_11_Addr1(Pipe2Out[11]),
 		.Pipe2Out_12_Addr2(Pipe2Out[12]),
-		.Pipe2Out_13_BusRequest(Pipe2Out[13]),
+		.Pipe2Out_13_BusRequest(Pipe2Out[13]), // to Stage 0 & 1, too
 		.Pipe2Out_14_PCRA_Flip(Pipe2Out[14]),
 		.Pipe2Out_15_Break(Pipe2Out[15])
 	);
