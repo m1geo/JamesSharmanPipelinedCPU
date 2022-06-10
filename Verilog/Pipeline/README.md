@@ -19,3 +19,5 @@ See the individual stages for more details on each.
 - 8bit main bus control
 - Memory operations
 - SP decrement
+
+![Simulation Waveform](https://raw.githubusercontent.com/m1geo/JamesSharmanPipelinedCPU/main/Verilog/Pipeline/PipelineAll_sim.png "Simulation Waveform")

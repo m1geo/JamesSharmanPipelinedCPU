@@ -10,9 +10,9 @@ Module notes:
 */
 
 // Include Submodules.
-`include "Pipeline0/PipelineStage0.v"
-`include "Pipeline1/PipelineStage1.v"
-`include "Pipeline2/PipelineStage2.v"
+//`include "Pipeline0/PipelineStage0.v"
+//`include "Pipeline1/PipelineStage1.v"
+//`include "Pipeline2/PipelineStage2.v"
 
 
 module Pipeline (
@@ -34,13 +34,16 @@ module Pipeline (
 	// Not sure if these are used 
 	//assign FetchSurpress = Pipe1Out[15];
 	//assign BusRequest = Pipe2Out[13];
+	// helps with feedback 1'bX when starting
+	wire FetchSurpress = (Pipe1Out[15] === 1'dx) ? 1'b0 : Pipe1Out[15];
+	wire BusRequest = (Pipe2Out[13] === 1'dx) ? 1'b0 : Pipe2Out[13];
 
 	// Pipeline Stage 0
 	wire [7:0] PipeOut0In1;
 	PipelineStage0 pls0 (
 		.ClockIn(ClockIn), // in
-		.BusRequest(Pipe2Out[13]), // in from Stage 2
-		.FetchSurpress(Pipe1Out[15]), // in from Stage 1
+		.BusRequest(BusRequest), // in from Stage 2
+		.FetchSurpress(FetchSurpress), // in from Stage 1
 		.MEMDATA(MEMDATA), // in [7:0]
 		.PipeOut(PipeOut0In1), // out [7:0]
 		
@@ -56,7 +59,7 @@ module Pipeline (
 	wire [7:0] PipeOut1In2;
 	PipelineStage1 pls1 (
 		.ClockIn(ClockIn), // in
-		.BusRequest(Pipe2Out[13]), // in from Stage 2
+		.BusRequest(BusRequest), // in from Stage 2
 		.PipeIn(PipeOut0In1), // in [7:0]
 		.PipeOut(PipeOut1In2), // out [7:0]
 	
@@ -85,7 +88,7 @@ module Pipeline (
 		.Pipe1Out_12_XA0(Pipe1Out[12]),
 		.Pipe1Out_13_XA1(Pipe1Out[13]),
 		.Pipe1Out_14_XA2(Pipe1Out[14]),
-		.Pipe1Out_15_FetchSurpress(Pipe1Out[15]) // to to Stage 0, too
+		.Pipe1Out_15_FetchSurpress(Pipe1Out[15]) // to Stage 0, too
 	);
 
 	// Pipeline Stage 2
