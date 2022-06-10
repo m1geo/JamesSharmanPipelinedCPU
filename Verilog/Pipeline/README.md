@@ -1,5 +1,5 @@
 # James Sharman Pipelined CPU in Verilog
-## Pipeline (untested)
+## Pipeline
 This simple module combines the 3 smaller Pipeline stages into a single stage, and squashes the Flag inputs and Control outputs into smaller buses.
 
 See the individual stages for more details on each.
@@ -20,4 +20,5 @@ See the individual stages for more details on each.
 - Memory operations
 - SP decrement
 
+### Simulation
 ![Simulation Waveform](https://raw.githubusercontent.com/m1geo/JamesSharmanPipelinedCPU/main/Verilog/Pipeline/PipelineAll_sim.png "Simulation Waveform")
