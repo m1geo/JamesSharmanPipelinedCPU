@@ -1,10 +1,10 @@
 /*
 
-Name:				Pipeline Stage 2 - TESTBENCH
+Name:				Complete Pipeline - TESTBENCH
 
 FPGA/Verilog: 		George Smart (@m1geo) http://www.george-smart.co.uk
 Project Source:		https://github.com/m1geo/JamesSharmanPipelinedCPU
-Verilog Rev:		1.0 (2022-05-20)
+Verilog Rev:		1.0 (2022-06-11)
 
 Module notes:
     Testbench for Pipeline Stage 2
@@ -21,8 +21,6 @@ localparam period = 10; // period is 10 nanoseconds
 reg       tb_clk;
 reg [7:0] tb_PipeIn;
 reg [6:0] tb_Flags;
-
-//integer i;
 
 wire [7:0] tb_PipeOut; // end of pipeline bus
 wire [1:0] tb_Pipe0Out;
@@ -45,6 +43,8 @@ Pipeline DUT (
 
 	// generate clock
     always #(period/2) tb_clk=~tb_clk;
+
+	integer i;
 
     initial begin
 		// inital values
