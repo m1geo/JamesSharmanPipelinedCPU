@@ -10,7 +10,7 @@ Module notes:
 */
 
 // Include Submodules.
-`include "GeneralPurposeRegister.v
+`include "GeneralPurposeRegister.v"
 
 
 module GPR_Group (
