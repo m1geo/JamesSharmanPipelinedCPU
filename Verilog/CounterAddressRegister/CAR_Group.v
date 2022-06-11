@@ -65,7 +65,7 @@ module CAR_Group (
 		.inc(pcra0_inc),
 		.load_n(pcra0_xbus_load),
 		.a_addr_n(pcra0_addr_assert),
-		.a_bus_n(pcra0_addr_assert)
+		.a_bus_n(pcra0_xbus_assert)
 	);
 	
 	// PCRA1 (Program Counter/Return Address)
@@ -78,7 +78,7 @@ module CAR_Group (
 		.inc(pcra1_inc),
 		.load_n(pcra1_xbus_load),
 		.a_addr_n(pcra1_addr_assert),
-		.a_bus_n(pcra1_addr_assert)
+		.a_bus_n(pcra1_xbus_assert)
 	);
 
 	// SP (Stack Pointer)
@@ -91,7 +91,7 @@ module CAR_Group (
 		.inc(sp_inc),
 		.load_n(sp_xbus_load),
 		.a_addr_n(sp_addr_assert),
-		.a_bus_n(sp_addr_assert)
+		.a_bus_n(sp_xbus_assert)
 	);
 	
 	// SI (Source Index)
@@ -104,7 +104,7 @@ module CAR_Group (
 		.inc(si_inc),
 		.load_n(si_xbus_load),
 		.a_addr_n(si_addr_assert),
-		.a_bus_n(si_addr_assert)
+		.a_bus_n(si_xbus_assert)
 	);
 
 	// DI (Destination Index)
@@ -117,7 +117,7 @@ module CAR_Group (
 		.inc(di_inc),
 		.load_n(di_xbus_load),
 		.a_addr_n(di_addr_assert),
-		.a_bus_n(di_addr_assert)
+		.a_bus_n(di_xbus_assert)
 	);
 
 endmodule

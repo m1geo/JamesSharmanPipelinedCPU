@@ -125,9 +125,35 @@ CAR_Group DUT (
 		     dummy[1], tb_pcra1_addr_assert, tb_pcra1_xbus_assert, tb_pcra1_xbus_load,
 		     dummy[0], tb_pcra0_addr_assert, tb_pcra0_xbus_assert, tb_pcra0_xbus_load} = ~(1<<i); // one cold
 
-			#((2*period)-1);
+			#(period-1);
 		end
-
-        $finish;
-    end
+		
+		// test increments (add 3)
+		for (i=0; i<3; i=i+1) begin
+		      {tb_di_inc, tb_si_inc, tb_sp_inc, tb_pcra1_inc, tb_pcra0_inc} = 5'h1F;
+		      #(period/2);
+		      {tb_di_inc, tb_si_inc, tb_sp_inc, tb_pcra1_inc, tb_pcra0_inc} = 5'h00;
+		      #(period/2);
+		end
+		for (i=0; i<5; i=i+1) begin
+		  {tb_di_addr_assert, tb_si_addr_assert, tb_sp_addr_assert, tb_pcra1_addr_assert, tb_pcra0_addr_assert} = ~(1<<i);
+		  #(period);
+		  {tb_di_addr_assert, tb_si_addr_assert, tb_sp_addr_assert, tb_pcra1_addr_assert, tb_pcra0_addr_assert} = 5'h1F;
+		end 
+		
+		// test increments (sub 4)
+		for (i=0; i<4; i=i+1) begin
+		      {tb_di_dec, tb_si_dec, tb_sp_dec, tb_pcra1_dec, tb_pcra0_dec} = 5'h1F;
+		      #(period/2);
+		      {tb_di_dec, tb_si_dec, tb_sp_dec, tb_pcra1_dec, tb_pcra0_dec} = 5'h00;
+		      #(period/2);
+		end
+		for (i=0; i<5; i=i+1) begin
+		  {tb_di_addr_assert, tb_si_addr_assert, tb_sp_addr_assert, tb_pcra1_addr_assert, tb_pcra0_addr_assert} = ~(1<<i);
+		  #(period);
+		  {tb_di_addr_assert, tb_si_addr_assert, tb_sp_addr_assert, tb_pcra1_addr_assert, tb_pcra0_addr_assert} = 5'h1F;
+		end 
+		
+		$finish;
+    end 
 endmodule // end testbench
