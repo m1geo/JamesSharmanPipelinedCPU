@@ -10,7 +10,7 @@ Module notes:
 */
 
 // Include Submodules.
-`include "CounterAddressRegister.v
+`include "CounterAddressRegister.v"
 
 
 module CAR_Group (
@@ -52,7 +52,7 @@ module CAR_Group (
 	input			di_inc,
 	input			di_xbus_load,
 	input			di_xbus_assert,
-	input			di_addr_assert,
+	input			di_addr_assert
 );
 
 	// PCRA0 (Program Counter/Return Address)
