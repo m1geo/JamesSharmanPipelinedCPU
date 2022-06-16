@@ -2,6 +2,10 @@
 ## ALU
 Merged ALU submodules.
 
+### Simulation
+
+![Simulation Waveform](https://raw.githubusercontent.com/m1geo/JamesSharmanPipelinedCPU/main/Verilog/ALU/ALU_sim.png "Simulation Waveform")
+
 ### Operation Summary
 Summary of ALU Operations from the Diode Matrix on James' build.
 
@@ -23,7 +27,3 @@ Summary of ALU Operations from the Diode Matrix on James' build.
 | 13     | h33     | NOT       |
 | 14     | h30     | CLC       |
 | 15     | h00     | err       |
-
-### Simulation
-
-![Simulation Waveform](https://raw.githubusercontent.com/m1geo/JamesSharmanPipelinedCPU/main/Verilog/ALU/ALU_sim.png "Simulation Waveform")
