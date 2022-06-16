@@ -32,7 +32,7 @@ module ALU (
 	input			Pipe1Out_4_ALUOP0,
 	input			Pipe1Out_5_ALUOP1,
 	input			Pipe1Out_6_ALUOP2,
-	input			Pipe1Out_7_ALUOP3
+	input			Pipe1Out_7_ALUOP3,
 	
 	// FLAGS
 	output			Flags_0_Overflow,
