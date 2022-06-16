@@ -44,8 +44,6 @@ module ALU (
 	// CARRYCTRL
 	input			LCarryIn,
 	input			LCARRYNEW,
-	input			AC6_CS0,
-	input			AC7_CS1,
 	input			Alu_Assert //active low
 );
 

@@ -20,7 +20,6 @@ reg       tb_clk;
 reg [3:0] tb_alu_opcode = 0;
 reg [7:0] tb_LHS = 0;
 reg [7:0] tb_RHS = 0;
-reg [1:0] tb_CS = 0;
 reg       tb_Alu_Assert = 0;
 reg       tb_LCarryNew = 0;
 reg       tb_LCarryIn = 0;
@@ -59,8 +58,6 @@ ALU DUT (
 	// CARRYCTRL (inputs)
 	.LCarryIn(tb_LCarryIn),
 	.LCARRYNEW(tb_LCarryNew),
-	.AC6_CS0(tb_CS[0]),
-	.AC7_CS1(tb_CS[1]),
 	.Alu_Assert(tb_Alu_Assert)
 );
 
