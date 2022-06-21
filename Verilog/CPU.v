@@ -6,6 +6,10 @@ Project Source:		https://github.com/m1geo/JamesSharmanPipelinedCPU
 Verilog Rev:		0.1 (2022-06-17)
 
 Module notes:
+	jamon's jamessharman-8bit-cpu-sim project has a diagram of interconnects
+	https://raw.githubusercontent.com/jamon/jamessharman-8bit-cpu-sim/main/Cpu.svg
+	
+	Should probably bundle the GPRx and CARx control lines into buses.
 */
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -33,19 +37,18 @@ wire  [7:0] LHSBUS;  // GPR-ALU-Left bus
 wire  [7:0] RHSBUS;  // GPR-ALU-Right bus
 wire [15:0] ADDRBUS; // Address Bus (16bit)
 wire [15:0] XFERBUS; // Transfer Bus (16bit)
-wire  [6:0] FLAGS;   // Flags Bus ()
+wire  [1:0] PIPE0OUT; // Pipeline Stage 1 Output Bus (2bit)
+wire [15:0] PIPE1OUT; // Pipeline Stage 1 Output Bus (16bit)
+wire [15:0] PIPE2OUT; // Pipeline Stage 1 Output Bus (16bit)
 
-Flags_0_Overflow
-Flags_1_Sign
-Flags_2_Zero
-Flags_3_CarryA
-Flags_4_CarryL
-Flags_5_PCRA_Flip
-Flags_6_Reset
+wire  [6:0] FLAGS;   // Flags Bus (6_Reset, 5_PCRA_Flip, 4_CarryL, 3_CarryA, 2_Zero, 1_Sign, 0_Overflow)
 
 // Signals
 wire        MAINCLK; // Master system clock
-wire        MAINRST; // Master system reset
+wire        MAINRST; // Master system reset (active low)
+
+// Assigns
+assign FLAGS[6] = MAINRST;
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -69,11 +72,11 @@ ALU alu (
 	.Pipe1Out_7_ALUOP3(),
 	
 	// FLAGS (outputs)
-	.Flags_0_Overflow(),
-	.Flags_1_Sign(),
-	.Flags_2_Zero(),
-	.Flags_3_CarryA(),
-	.Flags_4_CarryL(),
+	.Flags_0_Overflow(FLAGS[0]),
+	.Flags_1_Sign(FLAGS[1]),
+	.Flags_2_Zero(FLAGS[2]),
+	.Flags_3_CarryA(FLAGS[3]),
+	.Flags_4_CarryL(FLAGS[4]),
 
 	// CARRYCTRL (inputs)
 	.LCarryIn(),
@@ -88,7 +91,7 @@ ALU alu (
 BusControl buscontrol (
 	// SIL4 INPUTS
 	.Clock_In(MAINCLK),
-	.Reset_In(MAINRST),	// active low
+	.Reset_In(FLAGS[6]),	// active low
 	
 	// SIL8 MAINBUSCTRL
 	.Bus_Assert(), // [3:0]
@@ -337,13 +340,14 @@ Pipeline pipeline (
 	.PipeOut(), // out (not used)
 		
 	// Control (outputs)
-	.Pipe0Out(), // [1:0]
-	.Pipe1Out(), // [15:0]
-	.Pipe2Out(), // [15:0]
+	.Pipe0Out(PIPE0OUT), // [1:0]
+	.Pipe1Out(PIPE1OUT), // [15:0]
+	.Pipe2Out(PIPE2OUT), // [15:0]
 	
 	// flag (inputs)
-	.Flags() // [6:0]
+	.Flags(FLAGS) // [6:0]
 );
+assign FLAGS[5] = PIPE2OUT[14]; // Flags_5_PCRA_Flip = Pipe2Out_14_PCRA_Flip;
 
 
 ///////////////////////////////////////////////////////////////////////////////
