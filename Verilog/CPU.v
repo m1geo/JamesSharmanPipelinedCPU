@@ -1,15 +1,18 @@
 /*
-Name:				Entire CPU - DRAFT - ATTEMPT1
+Name:				Entire CPU - ATTEMPT1
 
 FPGA/Verilog: 		George Smart (@m1geo) http://www.george-smart.co.uk
 Project Source:		https://github.com/m1geo/JamesSharmanPipelinedCPU
-Verilog Rev:		0.1 (2022-06-17)
+Verilog Rev:		0.1 (2022-06-30)
 
 Module notes:
 	jamon's jamessharman-8bit-cpu-sim project has a diagram of interconnects
 	https://raw.githubusercontent.com/jamon/jamessharman-8bit-cpu-sim/main/Cpu.svg
 	
 	Should probably bundle the GPRx and CARx control lines into buses.
+	
+	Check ALU carries are correct - LCARRYNEW is likely logic carry = flag4
+	  See alu.LCarryIn(...) - Flag3 or Flag4?
 */
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -158,8 +161,7 @@ ALU alu (
 	.Flags_4_CarryL(FLAGS[4]),
 
 	// CARRYCTRL (inputs)
-	.LCarryIn(),
-	.LCARRYNEW(),
+	.LCarryIn(FLAGS[4]),
 	.Alu_Assert(w_alu_assert)
 );
 

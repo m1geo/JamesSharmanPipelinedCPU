@@ -43,9 +43,9 @@ module ALU (
 
 	// CARRYCTRL
 	input			LCarryIn,
-	input			LCARRYNEW,
 	input			Alu_Assert //active low
 );
+
 
 	// ALU Control
 	wire AluClock;
