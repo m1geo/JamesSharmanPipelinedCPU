@@ -33,7 +33,7 @@ module CounterAddressRegister (
     reg [15:0] C_reg;
     reg dec_old = 0;
     reg inc_old = 0;
-	always @(posedge clear or negedge load_n or inc or dec)
+	always @(posedge clear or negedge load_n or posedge inc or posedge dec)
     begin
       inc_old <= inc;
       dec_old <= dec;

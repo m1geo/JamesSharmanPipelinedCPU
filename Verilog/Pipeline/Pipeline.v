@@ -10,9 +10,9 @@ Module notes:
 */
 
 // Include Submodules.
-`include "Pipeline0/PipelineStage0.v"
-`include "Pipeline1/PipelineStage1.v"
-`include "Pipeline2/PipelineStage2.v"
+//`include "Pipeline0/PipelineStage0.v"
+//`include "Pipeline1/PipelineStage1.v"
+//`include "Pipeline2/PipelineStage2.v"
 
 
 module Pipeline (

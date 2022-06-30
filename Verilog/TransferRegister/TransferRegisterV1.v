@@ -36,10 +36,14 @@ module TransferRegisterV1 (
 	// input mux - wasteful mux - no priority if more than one mux is selected!
 	assign input_mux = l_tl_n ? 16'bZ : {Q_reg[15:8], MainBus[7:0]}; // update low with mainbus
 	assign input_mux = l_th_n ? 16'bZ : {MainBus[7:0], Q_reg[7:0]}; // update high with mainbus
-	assign input_mux = l_tx_n ? 16'bZ : Bus; // update high with mainbus
+	assign input_mux = l_tx_n ? 16'bZ : Bus; // update all with xferbus
+	
+	// input signals active low, so idle high. Anding give 1 when all high.
+	wire latch_strobe;
+	assign latch_strobe = &{l_tl_n, l_th_n, l_tx_n};
 	
 	// the register assignment
-	always @(posedge l_tl_n or posedge l_th_n or posedge l_tx_n)
+	always @(posedge latch_strobe)
 		Q_reg <= input_mux;
 	
 	// assert to address bus when a_tx_addr_n is LOW; else High-Z.

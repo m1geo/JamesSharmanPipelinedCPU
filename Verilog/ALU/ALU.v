@@ -10,11 +10,12 @@ Module notes:
 	AluClock should probably be removed and propagate AluActive to always block enables.
 */
 
+
 // Include Submodules.
-`include "ALU_Control/ALU_Control.v"
-`include "ALU_Output/ALU_Output.v"
-`include "ALU_LHS/ALU_LHS.v"
-`include "ALU_RHS/ALU_RHS.v"
+//`include "ALU_Control/ALU_Control.v"
+//`include "ALU_Output/ALU_Output.v"
+//`include "ALU_LHS/ALU_LHS.v"
+//`include "ALU_RHS/ALU_RHS.v"
 
 
 module ALU (

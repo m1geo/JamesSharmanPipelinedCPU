@@ -10,7 +10,7 @@ Module notes:
 */
 
 // Include Submodules.
-`include "CounterAddressRegister.v"
+//`include "CounterAddressRegister.v"
 
 
 module CAR_Group (
