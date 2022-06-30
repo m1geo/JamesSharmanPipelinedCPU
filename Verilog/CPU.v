@@ -31,15 +31,17 @@ Module notes:
 // Inter-module Signals & Buses
 
 // Buses
-wire  [7:0] MAINBUS; // Data bus
-wire  [7:0] MEMDATA; // Memory data bus
-wire  [7:0] LHSBUS;  // GPR-ALU-Left bus
-wire  [7:0] RHSBUS;  // GPR-ALU-Right bus
-wire [15:0] ADDRBUS; // Address Bus (16bit)
-wire [15:0] XFERBUS; // Transfer Bus (16bit)
+wire  [7:0] MAINBUS;  // Data bus
+wire  [7:0] MEMDATA;  // Memory data bus
+wire  [7:0] LHSBUS;   // GPR-ALU-Left bus
+wire  [7:0] RHSBUS;   // GPR-ALU-Right bus
+wire [15:0] ADDRBUS;  // Address Bus (16bit)
+wire [15:0] XFERBUS;  // Transfer Bus (16bit)
 wire  [1:0] PIPE0OUT; // Pipeline Stage 1 Output Bus (2bit)
 wire [15:0] PIPE1OUT; // Pipeline Stage 1 Output Bus (16bit)
 wire [15:0] PIPE2OUT; // Pipeline Stage 1 Output Bus (16bit)
+wire  [1:0] ALULHS;   // LHS bus
+wire  [1:0] ALURHS;   // RHS bus
 
 wire  [6:0] FLAGS;   // Flags Bus (6_Reset, 5_PCRA_Flip, 4_CarryL, 3_CarryA, 2_Zero, 1_Sign, 0_Overflow)
 
@@ -50,6 +52,83 @@ wire        MAINRST; // Master system reset (active low)
 // Assigns
 assign FLAGS[6] = MAINRST;
 
+// GPR Regs
+wire w_a_load;
+wire w_a_main_assert;
+wire w_a_lhs_assert;
+wire w_a_rhs_assert;
+
+wire w_b_load;
+wire w_b_main_assert;
+wire w_b_lhs_assert;
+wire w_b_rhs_assert;
+
+wire w_c_load;
+wire w_c_main_assert;
+wire w_c_lhs_assert;
+wire w_c_rhs_assert;
+
+wire w_d_load;
+wire w_d_main_assert;
+wire w_d_lhs_assert;
+wire w_d_rhs_assert;
+
+// CAR Regs
+wire w_reg_pcra0_dec;
+wire w_reg_pcra0_inc;
+wire w_reg_pcra0_load;
+wire w_reg_pcra0_aaddr;
+wire w_reg_pcra0_axfer;
+
+wire w_reg_pcra1_dec;
+wire w_reg_pcra1_inc;
+wire w_reg_pcra1_load;
+wire w_reg_pcra1_aaddr;
+wire w_reg_pcra1_axfer;
+
+wire w_reg_sp_dec;
+wire w_reg_sp_inc;
+wire w_reg_sp_load;
+wire w_reg_sp_aaddr;
+wire w_reg_sp_axfer;
+
+wire w_reg_si_dec;
+wire w_reg_si_inc;
+wire w_reg_si_load;
+wire w_reg_si_aaddr;
+wire w_reg_si_axfer;
+
+wire w_reg_di_dec;
+wire w_reg_di_inc;
+wire w_reg_di_load;
+wire w_reg_di_aaddr;
+wire w_reg_di_axfer;
+
+// Transfer Reg
+wire w_reg_tl_load;
+wire w_reg_tl_assert;
+wire w_reg_th_load;
+wire w_reg_th_assert;
+wire w_reg_tx_load;
+wire w_reg_tx_aaddr;
+wire w_reg_tx_axfer;
+
+
+// Const Reg
+wire w_const_a_main_n;
+wire w_const_load_n;
+
+// Memory Control
+wire w_mem_direction;
+wire w_mem_load;
+wire w_mem_assert;
+
+// Address Registers
+wire w_addrreg_clk;
+wire w_addrreg_rst;
+
+// ALU Control
+wire w_alu_assert;
 
 ///////////////////////////////////////////////////////////////////////////////
 // ALU Top
@@ -66,10 +145,10 @@ ALU alu (
 	.RHS(RHSBUS), // [7:0]
 	
 	// ALU OP (inputs)
-	.Pipe1Out_4_ALUOP0(),
-	.Pipe1Out_5_ALUOP1(),
-	.Pipe1Out_6_ALUOP2(),
-	.Pipe1Out_7_ALUOP3(),
+	.Pipe1Out_4_ALUOP0(PIPE1OUT[4]),
+	.Pipe1Out_5_ALUOP1(PIPE1OUT[5]),
+	.Pipe1Out_6_ALUOP2(PIPE1OUT[6]),
+	.Pipe1Out_7_ALUOP3(PIPE1OUT[7]),
 	
 	// FLAGS (outputs)
 	.Flags_0_Overflow(FLAGS[0]),
@@ -81,7 +160,7 @@ ALU alu (
 	// CARRYCTRL (inputs)
 	.LCarryIn(),
 	.LCARRYNEW(),
-	.Alu_Assert()
+	.Alu_Assert(w_alu_assert)
 );
 
 
@@ -89,129 +168,129 @@ ALU alu (
 // Bus Control
 
 BusControl buscontrol (
-	// SIL4 INPUTS
+	// SIL4 CLK/RST (inputs)
 	.Clock_In(MAINCLK),
 	.Reset_In(FLAGS[6]),	// active low
 	
-	// SIL8 MAINBUSCTRL
-	.Bus_Assert(), // [3:0]
-	.Bus_Load(), // [3:0]
+	// SIL8 MAINBUSCTRL (inputs)
+	.Bus_Assert(PIPE2OUT[3:0]), // [3:0]
+	.Bus_Load(PIPE2OUT[7:4]), // [3:0]
 	
-	// SIL8 XFERBUSCTRL
-	.Xfer_Assert(), // [2:0]
-	.XferLoadDec(), // [3:0]
+	// SIL8 XFERBUSCTRL (inputs)
+	.Xfer_Assert(PIPE1OUT[14:12]), // [2:0]
+	.XferLoadDec(PIPE1OUT[11:8]), // [3:0]
 	
-	// SIL4 INC
-	.Inc_PCRA(), // [1:0]
-	.Inc_SPSIDI(), // [1:0]
+	// SIL4 INC (inputs)
+	.Inc_PCRA(PIPE0OUT[1:0]), // [1:0]
+	.Inc_SPSIDI(PIPE2OUT[9:8]), // [1:0]
 	
-	// SIL4 ALUSEL
-	.LHS(), // [1:0] (not LHSBUS)
-	.RHS(), // [1:0] (not RHSBUS)
+	// SIL4 ALUSEL (inputs)
+	.LHS(PIPE1OUT[1:0]), // [1:0] (not LHSBUS)
+	.RHS(PIPE1OUT[3:2]), // [1:0] (not RHSBUS)
 	
-	// SIL4 ADDRSEL
-	.AddrSel(), // [2:0]
+	// SIL4 ADDRSEL (inputs)
+	.AddrSel(PIPE2OUT[12:10]), // [2:0]
 		
 	// SIL5 A (outputs)
-	.Reg_A_Load(),
-	.Reg_A_Assert(),
-	.Reg_A_LHS(),
-	.Reg_A_RHS(),
+	.Reg_A_Load(w_a_load),
+	.Reg_A_Assert(w_a_main_assert),
+	.Reg_A_LHS(w_a_lhs_assert),
+	.Reg_A_RHS(w_a_rhs_assert),
 	
 	// SIL5 B (outputs)
-	.Reg_B_Load(),
-	.Reg_B_Assert(),
-	.Reg_B_LHS(),
-	.Reg_B_RHS(),
+	.Reg_B_Load(w_b_load),
+	.Reg_B_Assert(w_b_main_assert),
+	.Reg_B_LHS(w_b_lhs_assert),
+	.Reg_B_RHS(w_b_rhs_assert),
 	
 	// SIL5 C (outputs)
-	.Reg_C_Load(),
-	.Reg_C_Assert(),
-	.Reg_C_LHS(),
-	.Reg_C_RHS(),
+	.Reg_C_Load(w_c_load),
+	.Reg_C_Assert(w_c_main_assert),
+	.Reg_C_LHS(w_c_lhs_assert),
+	.Reg_C_RHS(w_c_rhs_assert),
 	
 	// SIL5 D (outputs)
-	.Reg_D_Load(),
-	.Reg_D_Assert(),
-	.Reg_D_LHS(),
-	.Reg_D_RHS(),
+	.Reg_D_Load(w_d_rhs_assert),
+	.Reg_D_Assert(w_d_rhs_assert),
+	.Reg_D_LHS(w_d_rhs_assert),
+	.Reg_D_RHS(w_d_rhs_assert),
 
 	// SIL4 CONST (outputs)
-	.Reg_Const_LoadBus(),
-	.Reg_Const_LoadMem(),
-	.Reg_Const_Assert(),
+	.Reg_Const_LoadBus(), // not used
+	.Reg_Const_LoadMem(w_const_load_n),
+	.Reg_Const_Assert(w_const_a_main_n),
 	
 	// Register Shared Control Lines (outputs) - one per connector on PCBs
-	.AddrRegClock(),
-	.AddrRegClear(),
+	.AddrRegClock(w_addrreg_clk),
+	.AddrRegClear(w_addrreg_rst),
 	
 	// SIL8 PCRA0 (outputs)
-	.Reg_PCRA0_Dec(),
-	.Reg_PCRA0_Inc(),
-	.Reg_PCRA0_Load(),
-	.Reg_PCRA0_AAddr(),
-	.Reg_PCRA0_AXfer(),
+	.Reg_PCRA0_Dec(w_reg_pcra0_dec),
+	.Reg_PCRA0_Inc(w_reg_pcra0_dec),
+	.Reg_PCRA0_Load(w_reg_pcra0_dec),
+	.Reg_PCRA0_AAddr(w_reg_pcra0_dec),
+	.Reg_PCRA0_AXfer(w_reg_pcra0_dec),
 	
 	// SIL8 PCRA1 (outputs)
-	.Reg_PCRA1_Dec(),
-	.Reg_PCRA1_Inc(),
-	.Reg_PCRA1_Load(),
-	.Reg_PCRA1_AAddr(),
-	.Reg_PCRA1_AXfer(),
+	.Reg_PCRA1_Dec(w_reg_pcra1_dec),
+	.Reg_PCRA1_Inc(w_reg_pcra1_dec),
+	.Reg_PCRA1_Load(w_reg_pcra1_dec),
+	.Reg_PCRA1_AAddr(w_reg_pcra1_dec),
+	.Reg_PCRA1_AXfer()w_reg_pcra1_dec,
 	
 	// SIL8 SP (outputs)
-	.Reg_SP_Dec(),
-	.Reg_SP_Inc(),
-	.Reg_SP_Load(),
-	.Reg_SP_AAddr(),
-	.Reg_SP_AXfer(),
+	.Reg_SP_Dec(w_reg_sp_dec),
+	.Reg_SP_Inc(w_reg_sp_dec),
+	.Reg_SP_Load(w_reg_sp_dec),
+	.Reg_SP_AAddr(w_reg_sp_dec),
+	.Reg_SP_AXfer(w_reg_sp_dec),
 	
 	// SIL8 SI (outputs)
-	.Reg_SI_Dec(),
-	.Reg_SI_Inc(),
-	.Reg_SI_Load(),
-	.Reg_SI_AAddr(),
-	.Reg_SI_AXfer(),
+	.Reg_SI_Dec(w_reg_si_dec),
+	.Reg_SI_Inc(w_reg_si_dec),
+	.Reg_SI_Load(w_reg_si_dec),
+	.Reg_SI_AAddr(w_reg_si_dec),
+	.Reg_SI_AXfer(w_reg_si_dec),
 	
 	// SIL8 DI (outputs)
-	.Reg_DI_Dec(),
-	.Reg_DI_Inc(),
-	.Reg_DI_Load(),
-	.Reg_DI_AAddr(),
-	.Reg_DI_AXfer(),
+	.Reg_DI_Dec(w_reg_di_dec),
+	.Reg_DI_Inc(w_reg_di_dec),
+	.Reg_DI_Load(w_reg_di_dec),
+	.Reg_DI_AAddr(w_reg_di_dec),
+	.Reg_DI_AXfer(w_reg_di_dec),
 	
 	// SIL9 XFER (outputs)
-	.Reg_TL_Load(),
-	.Reg_TL_Assert(),
-	.Reg_TH_Load(),
-	.Reg_TH_Assert(),
-	.Reg_TX_Load(),
-	.Reg_TX_AAddr(),
-	.Reg_TX_AXfer(),
-	.Reg_TX_AMode(),
-	
+	.Reg_TL_Load(w_reg_tl_load),
+	.Reg_TL_Assert(w_reg_tl_assert),
+	.Reg_TH_Load(w_reg_th_load),
+	.Reg_TH_Assert(w_reg_th_assert),
+	.Reg_TX_Load(w_reg_tx_load),
+	.Reg_TX_AAddr(w_reg_tx_aaddr),
+	.Reg_TX_AXfer(w_reg_tx_axfer),
+	.Reg_TX_AMode(w_reg_tx_amode), // not used
+		
 	// SIL5 MEM (outputs)
-	.MemBridge_Assert(),
-	.MemBridge_Load(),
-	.MemBridge_Direction(),
-	.Memory_Ack(),
+	.MemBridge_Assert(w_mem_assert),
+	.MemBridge_Load(w_mem_load),
+	.MemBridge_Direction(w_mem_direction),
+	.Memory_Ack(),   // not used
 	
 	// SIL8 DEVICELOAD (outputs)
-	.Dev9_Load(),
-	.Dev10_Load(),
-	.Dev11_Load(),
-	.Dev12_Load(),
-	.Dev13_Load(),
-	.Dev14_Load(),
+	.Dev9_Load(),    // not used
+	.Dev10_Load(),   // not used
+	.Dev11_Load(),   // not used
+	.Dev12_Load(),   // not used
+	.Dev13_Load(),   // not used
+	.Dev14_Load(),   // not used
 	
 	// SIL8 DEVICEASSERT (outputs)
-	.Alu_Assert(),
-	.Dev9_Assert(),
-	.Dev10_Assert(),
-	.Dev11_Assert(),
-	.Dev12_Assert(),
-	.Dev13_Assert(),
-	.Dev14_Assert()
+	.Alu_Assert(w_alu_assert),
+	.Dev9_Assert(),  // not used
+	.Dev10_Assert(), // not used
+	.Dev11_Assert(), // not used
+	.Dev12_Assert(), // not used
+	.Dev13_Assert(), // not used
+	.Dev14_Assert()  // not used
 );
 
 
@@ -219,10 +298,10 @@ BusControl buscontrol (
 // Constant Register
 
 ConstantRegisterV2 constantregister (
-	.MemData(MEMDATA),
-	.MainBus(MAINBUS),
-	.a_main_n(),
-	.load()
+	.MemData(MEMDATA), // in
+	.MainBus(MAINBUS), // out
+	.a_main_n(w_const_a_main_n),
+	.load(w_const_load_n)
 );
 
 
@@ -230,45 +309,45 @@ ConstantRegisterV2 constantregister (
 // Counter Address Register Group
 
 CAR_Group cargroup (
-	.Addr(), // io [15:0]
-	.Xbus(), // io [15:0]
-	.clock(MAINCLK), // in
-	.clear(), // in
+	.Addr(ADDRBUS), // io [15:0]
+	.Xbus(XFERBUS), // io [15:0]
+	.clock(w_addrreg_clk), // in
+	.clear(w_addrreg_rst), // in (inverted in buscontrol compared to MAINRST and FLAG6)
 	
 	// PCRA0 (inputs)
-	.pcra0_dec(),
-	.pcra0_inc(),
-	.pcra0_xbus_load(),
-	.pcra0_xbus_assert(),
-	.pcra0_addr_assert(),
+	.pcra0_dec(w_reg_pcra0_dec),
+	.pcra0_inc(w_reg_pcra0_inc),
+	.pcra0_xbus_load(w_reg_pcra0_load),
+	.pcra0_xbus_assert(w_reg_pcra0_axfer),
+	.pcra0_addr_assert(w_reg_pcra0_aaddr),
 	
 	// PCRA1 (inputs)
-	.pcra1_dec(),
-	.pcra1_inc(),
-	.pcra1_xbus_load(),
-	.pcra1_xbus_assert(),
-	.pcra1_addr_assert(),
+	.pcra1_dec(w_reg_pcra1_dec),
+	.pcra1_inc(w_reg_pcra1_inc),
+	.pcra1_xbus_load(w_reg_pcra1_load),
+	.pcra1_xbus_assert(w_reg_pcra1_axfer),
+	.pcra1_addr_assert(w_reg_pcra1_aaddr),
 	
 	// SP (inputs)
-	.sp_dec(),
-	.sp_inc(),
-	.sp_xbus_load(),
-	.sp_xbus_assert(),
-	.sp_addr_assert(),
+	.sp_dec(w_reg_sp_dec),
+	.sp_inc(w_reg_sp_inc),
+	.sp_xbus_load(w_reg_sp_load),
+	.sp_xbus_assert(w_reg_sp_axfer),
+	.sp_addr_assert(w_reg_sp_aaddr),
 	
 	// SI (inputs)
-	.si_dec(),
-	.si_inc(),
-	.si_xbus_load(),
-	.si_xbus_assert(),
-	.si_addr_assert(),
+	.si_dec(w_reg_si_dec),
+	.si_inc(w_reg_si_inc),
+	.si_xbus_load(w_reg_si_load),
+	.si_xbus_assert(w_reg_si_axfer),
+	.si_addr_assert(w_reg_si_aaddr),
 	
 	// DI (inputs)
-	.di_dec(),
-	.di_inc(),
-	.di_xbus_load(),
-	.di_xbus_assert(),
-	.di_addr_assert()
+	.di_dec(w_reg_di_dec),
+	.di_inc(w_reg_di_inc),
+	.di_xbus_load(w_reg_di_load),
+	.di_xbus_assert(w_reg_di_axfer),
+	.di_addr_assert(w_reg_di_aaddr)
 );
 
 
@@ -281,28 +360,45 @@ GPR_Group gprgroup (
 	.RHSBus(RHSBUS), // out
 
 	// GPR A (inputs)
-	.a_load(),
-	.a_main_assert(),
-	.a_lhs_assert(),
-	.a_rhs_assert(),
+	.a_load(w_a_load),
+	.a_main_assert(w_a_main_assert),
+	.a_lhs_assert(w_a_lhs_assert),
+	.a_rhs_assert(w_a_rhs_assert),
 	
 	// GPR B (inputs)
-	.b_load(),
-	.b_main_assert(),
-	.b_lhs_assert(),
-	.b_rhs_assert(),
+	.b_load(w_b_load),
+	.b_main_assert(w_b_main_assert),
+	.b_lhs_assert(w_b_lhs_assert),
+	.b_rhs_assert(w_b_rhs_assert),
 	
 	// GPR C (inputs)
-	.c_load(),
-	.c_main_assert(),
-	.c_lhs_assert(),
-	.c_rhs_assert(),
+	.c_load(w_c_load),
+	.c_main_assert(w_c_main_assert),
+	.c_lhs_assert(w_c_lhs_assert),
+	.c_rhs_assert(w_c_rhs_assert),
 	
 	// GPR D (inputs)
-	.d_load(),
-	.d_main_assert(),
-	.d_lhs_assert(),
-	.d_rhs_assert()
+	.d_load(w_d_load),
+	.d_main_assert(w_d_main_assert),
+	.d_lhs_assert(w_d_lhs_assert),
+	.d_rhs_assert(w_d_rhs_assert)
+);
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Transfer Register
+
+TransferRegisterV1 transferregister (
+	.Addr(ADDRBUS),
+	.Bus(XFERBUS),
+	.MainBus(MAINBUS),
+	.a_tl_n(w_reg_tl_assert),
+	.l_tl_n(w_reg_tl_load),
+	.a_th_n(w_reg_th_assert),
+	.l_th_n(w_reg_th_load),
+	.l_tx_n(w_reg_tx_load),
+	.a_tx_addr_n(w_reg_tx_aaddr),
+	.a_tx_xfer_n(w_reg_tx_axfer)
 );
 
 
@@ -314,8 +410,8 @@ MainMemory3232 mainmemory3232 (
 	.MEMDATA(MEMDATA), // inout [7:0]
 	
 	// Mem Inputs
-	.MemBridge_Load(),
-	.MemBridge_Direction() // high = memory module output
+	.MemBridge_Load(w_mem_load),
+	.MemBridge_Direction(w_mem_direction) // high = memory module output
 );
 
 
@@ -326,8 +422,8 @@ MemBridge membridge (
 	.MainBus(MAINBUS),
 	.MemData(MEMDATA),
 	
-	.a_membridge_n(),	// active low, MemData->MainBus
-	.d_membridge_n()	// active low, MainBus->MemData
+	.a_membridge_n(w_mem_assert),	// active low, MemData->MainBus
+	.d_membridge_n(w_mem_direction)	// active low, MainBus->MemData
 );
 
 
@@ -348,23 +444,6 @@ Pipeline pipeline (
 	.Flags(FLAGS) // [6:0]
 );
 assign FLAGS[5] = PIPE2OUT[14]; // Flags_5_PCRA_Flip = Pipe2Out_14_PCRA_Flip;
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Transfer Register
-
-TransferRegisterV1 transferregister (
-	.Addr(),
-	.Bus(),
-	.MainBus(),
-	.a_tl_n(),
-	.l_tl_n(),
-	.a_th_n(),
-	.l_th_n(),
-	.l_tx_n(),
-	.a_tx_addr_n(),
-	.a_tx_xfer_n()
-);
 
 
 // End
