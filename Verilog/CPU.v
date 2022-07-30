@@ -224,9 +224,9 @@ module CPU (
         .Reg_C_RHS(w_c_rhs_assert),
         
         // SIL5 D (outputs)
-        .Reg_D_Load(w_d_rhs_assert),
-        .Reg_D_Assert(w_d_rhs_assert),
-        .Reg_D_LHS(w_d_rhs_assert),
+        .Reg_D_Load(w_d_load),
+        .Reg_D_Assert(w_d_main_assert),
+        .Reg_D_LHS(w_d_lhs_assert),
         .Reg_D_RHS(w_d_rhs_assert),
     
         // SIL4 CONST (outputs)
