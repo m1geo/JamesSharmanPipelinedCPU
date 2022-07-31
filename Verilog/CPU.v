@@ -240,38 +240,38 @@ module CPU (
         
         // SIL8 PCRA0 (outputs)
         .Reg_PCRA0_Dec(w_reg_pcra0_dec),
-        .Reg_PCRA0_Inc(w_reg_pcra0_dec),
-        .Reg_PCRA0_Load(w_reg_pcra0_dec),
-        .Reg_PCRA0_AAddr(w_reg_pcra0_dec),
-        .Reg_PCRA0_AXfer(w_reg_pcra0_dec),
+        .Reg_PCRA0_Inc(w_reg_pcra0_inc),
+        .Reg_PCRA0_Load(w_reg_pcra0_load),
+        .Reg_PCRA0_AAddr(w_reg_pcra0_aaddr),
+        .Reg_PCRA0_AXfer(w_reg_pcra0_axfer),
         
         // SIL8 PCRA1 (outputs)
         .Reg_PCRA1_Dec(w_reg_pcra1_dec),
-        .Reg_PCRA1_Inc(w_reg_pcra1_dec),
-        .Reg_PCRA1_Load(w_reg_pcra1_dec),
-        .Reg_PCRA1_AAddr(w_reg_pcra1_dec),
-        .Reg_PCRA1_AXfer(w_reg_pcra1_dec),
+        .Reg_PCRA1_Inc(w_reg_pcra1_inc),
+        .Reg_PCRA1_Load(w_reg_pcra1_load),
+        .Reg_PCRA1_AAddr(w_reg_pcra1_aaddr),
+        .Reg_PCRA1_AXfer(w_reg_pcra1_axfer),
         
         // SIL8 SP (outputs)
         .Reg_SP_Dec(w_reg_sp_dec),
-        .Reg_SP_Inc(w_reg_sp_dec),
-        .Reg_SP_Load(w_reg_sp_dec),
-        .Reg_SP_AAddr(w_reg_sp_dec),
-        .Reg_SP_AXfer(w_reg_sp_dec),
+        .Reg_SP_Inc(w_reg_sp_inc),
+        .Reg_SP_Load(w_reg_sp_load),
+        .Reg_SP_AAddr(w_reg_sp_aaddr),
+        .Reg_SP_AXfer(w_reg_sp_axfer),
         
         // SIL8 SI (outputs)
         .Reg_SI_Dec(w_reg_si_dec),
-        .Reg_SI_Inc(w_reg_si_dec),
-        .Reg_SI_Load(w_reg_si_dec),
-        .Reg_SI_AAddr(w_reg_si_dec),
-        .Reg_SI_AXfer(w_reg_si_dec),
+        .Reg_SI_Inc(w_reg_si_inc),
+        .Reg_SI_Load(w_reg_si_load),
+        .Reg_SI_AAddr(w_reg_si_aaddr),
+        .Reg_SI_AXfer(w_reg_si_axfer),
         
         // SIL8 DI (outputs)
         .Reg_DI_Dec(w_reg_di_dec),
-        .Reg_DI_Inc(w_reg_di_dec),
-        .Reg_DI_Load(w_reg_di_dec),
-        .Reg_DI_AAddr(w_reg_di_dec),
-        .Reg_DI_AXfer(w_reg_di_dec),
+        .Reg_DI_Inc(w_reg_di_inc),
+        .Reg_DI_Load(w_reg_di_load),
+        .Reg_DI_AAddr(w_reg_di_aaddr),
+        .Reg_DI_AXfer(w_reg_di_axfer),
         
         // SIL9 XFER (outputs)
         .Reg_TL_Load(w_reg_tl_load),
