@@ -14,7 +14,13 @@ Module notes:
 	16 bit loadable counter. Load from Bus on falling LOAD_n.
 	Assert to XFER bus on low a_bus_n. Assert to ADDR bus on low a_addr_n.
 	Data is intentionally doubly registered, as it is on the schematic.
-	Inc & Dec are a bit hacky as they rely on triggering from both edges.
+	
+	This is tricky because the FPGA has single clock FFs, and not SR latches.
+	I've used the clock to sync the output and big MUX to chose the next value.
+	If not acceptable, copy logic from datasheet?
+	https://www.ti.com/lit/ds/symlink/sn54ls193-sp.pdf
+	
+	The edge detection shift-registers may not work if the clock isn't faster than the data (which this isn't). Maybe any edge (_sr[1]^_sr[0]) is better? Datahsheet says rising. James' design has a second latch.
 */
 
 module CounterAddressRegister (
@@ -30,27 +36,25 @@ module CounterAddressRegister (
 );
 
     // 16 bit counter - behaviour to mimic 4x 74193 in cascade.
-    reg [15:0] C_reg;
-    reg dec_old = 0;
-    reg inc_old = 0;
-	always @(posedge clear or negedge load_n or posedge inc or posedge dec)
-    begin
-      inc_old <= inc;
-      dec_old <= dec;
-      if (clear)
-        C_reg <= 16'b0;
-      else if (~load_n)
-        C_reg <= Bus;
-      else if ((inc) && (~inc_old)) // a bit hacky
-        C_reg <= C_reg + 1;
-      else if ((dec) && (~dec_old)) // a bit hacky
-        C_reg <= C_reg - 1;
-    end
-       
-    // second latch for outputs clocked by Clock
+    wire [15:0] C_wire;
+    
+    // latch for outputs clocked by Clock
     reg [15:0] OP_reg;
-    always @ (posedge clock)
-		OP_reg <= C_reg;
+    
+    reg [1:0] inc_sr;
+    reg [1:0] dec_sr;
+    
+    // input mux to avoid weird async logic of 74193.
+    assign C_wire = clear ? 16'b0 : 
+                        ~load_n ? Bus : 
+                            (inc_sr==2'b01) ? (OP_reg + 16'b1) : // rising edge of inc
+                                (dec_sr==2'b01) ? (OP_reg - 16'b1) : OP_reg; // rising edge of dec
+
+    always @ (posedge clock) begin
+		OP_reg <= C_wire;
+		inc_sr = {inc_sr[0], inc}; // shift register for edge detection
+		dec_sr = {dec_sr[0], dec}; // shift register for edge detection
+	end
     
     // assert to transfer bus when a_bus_n is LOW; else High-Z.
 	assign Bus = a_bus_n  ? 16'bZ : OP_reg;

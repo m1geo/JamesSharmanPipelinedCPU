@@ -49,7 +49,7 @@ CounterAddressRegister DUT (
     initial
     begin
         tb_clk       = 0; //  initial clock
-        tb_Bus_val   = 8'hAAAA;
+        tb_Bus_val   = 16'hAAAA;
         tb_Bus_dir   = 1;
         tb_dec       = 1;
         tb_inc       = 1;
@@ -60,7 +60,7 @@ CounterAddressRegister DUT (
         #period; // wait
         
         // load but in reset.
-        tb_Bus_val   = 8'hAAAA;
+        tb_Bus_val   = 16'hAAAA;
         tb_Bus_dir   = 1;
         tb_dec       = 1;
         tb_inc       = 1;
@@ -71,7 +71,7 @@ CounterAddressRegister DUT (
         #period; // wait
         
         // clear reset and load
-        tb_Bus_val   = 8'hAAAA;
+        tb_Bus_val   = 16'hAAAA;
         tb_Bus_dir   = 1;
         tb_dec       = 1;
         tb_inc       = 1;
@@ -82,7 +82,7 @@ CounterAddressRegister DUT (
         #period; // wait
 
         // load
-        tb_Bus_val   = 8'hAAAA;
+        tb_Bus_val   = 16'hAAAA;
         tb_Bus_dir   = 1;
         tb_dec       = 1;
         tb_inc       = 1;
@@ -93,7 +93,7 @@ CounterAddressRegister DUT (
         #period; // wait
 
         // idle
-        tb_Bus_val   = 8'h0;
+        tb_Bus_val   = 16'h0;
         tb_Bus_dir   = 0;
         tb_dec       = 1;
         tb_inc       = 1;
