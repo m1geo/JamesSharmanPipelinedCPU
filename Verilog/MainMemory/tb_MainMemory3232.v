@@ -13,7 +13,7 @@ Module notes:
 // unimportant timescale.
 `timescale 1 ns/10 ps
 
-module tb_PipelineStage2;
+module tb_MainMemory3232;
 localparam period = 10; // period is 10 nanoseconds
 
 reg [15:0] tb_Addr;
