@@ -9,8 +9,9 @@ FPGA/Verilog: 		George Smart (@m1geo) http://www.george-smart.co.uk
 Project Source:		https://github.com/m1geo/JamesSharmanPipelinedCPU
 
 Module notes:
-	Just an empty module with ports.
-	See also MainMemory64Shadown which copies ROM to RAM and then runs.
+	Xilinx tools make this from LUTs and FF and not BRAM. Won't synth!!!
+
+	Suggest use MainMemory64Shadow. Later videos go for an "all RAM" approach.
 
 	RAM ideas from 	https://github.com/DoctorWkt/CSCvon8/blob/master/ram.v
 */
@@ -27,7 +28,7 @@ module MainMemory3232 (
 	// Program ROM file
 	localparam ProgRom_File = "Monitor.mem";
 
-	// Rom elements
+	// Rom elements - Xilinx tools make this from LUTs and FF and not BRAM. Won't synth!!!
 	reg [7:0] ProgRom [0:32767]; // 32k
 	reg [7:0] Ram     [0:32767]; // 32k
 	
