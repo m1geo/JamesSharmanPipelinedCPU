@@ -21,8 +21,7 @@ reg [3:0] tb_alu_opcode = 0;
 
 reg tb_clk;
 
-wire tb_AluClock_bufgce;
-wire tbAluClock_and;
+wire tbAluClock;
 wire tb_AluActive;
 
 wire tb_AC0_RHS0;
@@ -42,8 +41,7 @@ ALU_Control DUT (
 	.Pipe1Out_6_ALUOP2(tb_alu_opcode[2]),
 	.Pipe1Out_7_ALUOP3(tb_alu_opcode[3]),
 	
-	.AluClock_bufgce(tb_AluClock_bufgce),
-	.AluClock_and(tbAluClock_and),
+	.AluClock(tbAluClock),
 	.AluActive(tb_AluActive),
 	
 	.AC0_RHS0(tb_AC0_RHS0),

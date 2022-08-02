@@ -19,8 +19,7 @@ module ALU_Control (
 	input			Clock,
 
 	// ALU IO
-    output 			AluClock_bufgce,
-    output 			AluClock_and,
+    output 			AluClock,
 	output			AluActive,
 	
 	// ALU Control
@@ -43,18 +42,12 @@ module ALU_Control (
 	// AluActive inverse of select 0
 	wire select0 = ({Pipe1Out_7_ALUOP3, Pipe1Out_6_ALUOP2, Pipe1Out_5_ALUOP1, Pipe1Out_4_ALUOP0} == 4'b0);
 	assign AluActive = !select0;
-	
-	// AluClock - BUFGCE gated clock (adds 5-6ns skew and new clock domain)
-	// This is Xilinx Specific!!!!
-	BUFGCE alu_clock_gate (   
-		.I(Clock),
-		.CE(AluActive),
-		.O(AluClock_bufgce)    
-	);
-	
-	// awful clock gate - this is wrong for FPGA but how it's done in James' hardware
-	assign AluClock_and = (Clock & AluActive);
-	
+
+	// clock gate (latch enable on negative clock)
+	reg aluclock_enable_flop;
+	always @(negedge Clock) aluclock_enable_flop <= AluActive;
+	assign AluClock = (Clock & aluclock_enable_flop);
+
 	// ALU Control Diode Matrix
 	reg [7:0] diode_matrix;
 	always @(Pipe1Out_7_ALUOP3 or Pipe1Out_6_ALUOP2 or Pipe1Out_5_ALUOP1 or Pipe1Out_4_ALUOP0) begin
