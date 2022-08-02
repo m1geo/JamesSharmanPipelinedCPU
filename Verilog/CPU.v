@@ -23,15 +23,16 @@ Module notes:
 `include "ConstantRegisterV2/ConstantRegisterV2.v"
 `include "CounterAddressRegister/CAR_Group.v"
 `include "GeneralPurposeRegister/GPR_Group.v"
-`include "MainMemory/MainMemory3232.v"
+`include "MainMemory/MainMemory64Shadow.v"
 `include "MemBridge/MemBridge.v"
 `include "Pipeline/Pipeline.v"
 `include "TransferRegister/TransferRegisterV1.v"
-`include "UART/UART.v" // not written yet
+//`include "UART/UART.v" // not written yet
 
 module CPU (
     input        MAINCLK, // Master system clock
-    input        MAINRST // Master system reset (active low)
+    input        MAINRST, // Master system reset (active low)
+    output       w_mem_debugerror
 );
     
     ///////////////////////////////////////////////////////////////////////////////
@@ -117,7 +118,6 @@ module CPU (
     wire w_reg_tx_aaddr;
     wire w_reg_tx_axfer;
     
-    
     // Const Reg
     wire w_const_a_main_n;
     wire w_const_load_n;
@@ -126,6 +126,8 @@ module CPU (
     wire w_mem_direction;
     wire w_mem_load;
     wire w_mem_assert;
+    wire w_mem_ack;
+    //wire w_mem_debugerror; // top level output
     
     // Address Registers
     wire w_addrreg_clk;
@@ -137,14 +139,14 @@ module CPU (
     
     ///////////////////////////////////////////////////////////////////////////////
     // Nice Reset States?
-    
+    /*
     assign MAINBUS = MAINRST ? 8'bZ : 8'b0;
     assign MEMDATA = MAINRST ? 8'bZ : 8'b0;
     assign LHSBUS  = MAINRST ? 8'bZ : 8'b0;
     assign RHSBUS  = MAINRST ? 8'bZ : 8'b0;
     assign ADDRBUS = MAINRST ? 16'bZ : 16'b0;
     assign XFERBUS = MAINRST ? 16'bZ : 16'b0;
-    
+    */
     ///////////////////////////////////////////////////////////////////////////////
     // ALU Top
     
@@ -281,13 +283,13 @@ module CPU (
         .Reg_TX_Load(w_reg_tx_load),
         .Reg_TX_AAddr(w_reg_tx_aaddr),
         .Reg_TX_AXfer(w_reg_tx_axfer),
-        .Reg_TX_AMode(w_reg_tx_amode), // not used
+        .Reg_TX_AMode(), // not used
             
         // SIL5 MEM (outputs)
         .MemBridge_Assert(w_mem_assert),
         .MemBridge_Load(w_mem_load),
         .MemBridge_Direction(w_mem_direction),
-        .Memory_Ack(),   // not used
+        .Memory_Ack(w_mem_ack),
         
         // SIL8 DEVICELOAD (outputs)
         .Dev9_Load(),    // not used
@@ -418,16 +420,25 @@ module CPU (
     
     ///////////////////////////////////////////////////////////////////////////////
     // Main Memories (RAM and ROM)
-    
-    MainMemory3232 mainmemory3232 (
+
+    /*MainMemory3232 mainmemory3232 (
         .Addr(ADDRBUS), // in [15:0]
         .MEMDATA(MEMDATA), // inout [7:0]
         
         // Mem Inputs
         .MemBridge_Load(w_mem_load),
         .MemBridge_Direction(w_mem_direction) // high = memory module output
+    );*/
+    MainMemory64Shadow  mainmemory64 (
+        .Addr(ADDRBUS), // in [15:0]
+        .MEMDATA(MEMDATA), // inout [7:0]
+
+        // Mem Inputs
+        .MemBridge_Load(w_mem_load),
+        .MemBridge_Direction(w_mem_direction),
+        .Memory_Ack(w_mem_ack),
+        .DebugMemoryErrorWeirdness(w_mem_debugerror)
     );
-    
     
     ///////////////////////////////////////////////////////////////////////////////
     // Memory Bridge
