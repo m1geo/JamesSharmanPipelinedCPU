@@ -32,7 +32,10 @@ Module notes:
 module CPU (
     input        MAINCLK, // Master system clock
     input        MAINRST, // Master system reset (active low)
-    output       w_mem_debugerror
+    output       w_mem_debugerror,
+    output       MAINBUS,
+    output       MEMDATA,
+    output       ADDRBUS
 );
     
     ///////////////////////////////////////////////////////////////////////////////

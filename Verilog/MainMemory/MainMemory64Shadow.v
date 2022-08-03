@@ -29,7 +29,8 @@ module MainMemory64Shadow #(
 	output reg		DebugMemoryErrorWeirdness
 );
 
-	(* RAM_STYLE="BLOCK" *) reg [7:0] ram [65535:0]; // 64k RAM
+	(* RAM_STYLE="BLOCK" *) 
+	reg [7:0] ram [65535:0]; // 64k RAM
 	
 	// fill ROM/RAM areas as needed
 	initial begin
@@ -43,14 +44,17 @@ module MainMemory64Shadow #(
 	wire memOE = ((!MemBridge_Direction) || (!Memory_Ack)); // U10 & U11
 	
 	// tristate output
-	assign MEMDATA = (!memOE) ? ram[Addr] : 8'bZ;
+	assign MEMDATA = (!memOE) ? output_data : 8'bZ;
 	
-	always @(negedge MemBridge_Load or negedge memOE) begin
-		if (!MemBridge_Load) begin
+	//always_ff @(negedge MemBridge_Load or negedge memOE) begin
+	always @(negedge MemBridge_Load) begin
+		//if (!MemBridge_Load) begin
+		if (!MemBridge_Direction) begin
 			ram[Addr] <= MEMDATA;
 		end
 		output_data <= ram[Addr];
-		DebugMemoryErrorWeirdness <= (!MemBridge_Load && !memOE); // error - both /OE & /WE set
+		// [Synth 8-27] use of clock signal in expression not supported:
+		DebugMemoryErrorWeirdness <= 1'b0; //(!MemBridge_Load && !memOE); // error - both /OE & /WE set
 	end
 
 
