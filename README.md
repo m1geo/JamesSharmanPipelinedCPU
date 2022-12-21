@@ -1,5 +1,7 @@
 # James Sharman's JAM-1 8-bit Pipelined CPU in Verilog
-***This project is being worked on behind the scenes - The original files checked in are a close copy of the schematic, but really won't work well in FPGA***
+***This project is being worked on behind the scenes - See "ver2" branch***
+
+The original project (on main branch) more closely follow the schematic, but really won't work well in FPGA.
 
 It will be an Verilog implementation for FPGA of James Sharman's JAM-1 8-bit Pipelined CPU.
 Below is a list of useful resources:
