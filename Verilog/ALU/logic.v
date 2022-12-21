@@ -12,7 +12,12 @@
 
 module logic
 (
-    // ports here
+	input        clk,
+	input  [3:0] LogicSelect,
+    input  [7:0] LHSIn,
+    input  [7:0] RHSIn,
+    
+    output [7:0] RHSOut
 );
 
     // code here

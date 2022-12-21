@@ -12,7 +12,22 @@
 
 module flags
 (
-    // ports here
+	input        clk,
+	input        ArithCarryIn,
+	input        LogicCarryIn,
+    input  [7:0] DataIn,
+    input  [7:0] LHSIn,
+    input  [7:0] RHSIn,
+    input        CarrySelectA,
+    input        CarrySelectB,
+    
+    output       ArithCarryFlag,
+    output       LogicCarryFlag,
+    output       ZeroFlag,
+    output       SignFlag,
+    output       OverflowFlag,
+    output       CarrySelectADelayed,
+    output       CarrySelectBDelayed
 );
 
     // code here

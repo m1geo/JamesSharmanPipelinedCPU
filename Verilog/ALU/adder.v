@@ -12,7 +12,15 @@
 
 module adder
 (
-    // ports here
+    input        clk,
+    input        CarryFlag,
+    input  [7:0] LHS,
+    input  [7:0] RHS,
+    input        CarrySelectA,
+    input        CarrySelectB,
+    
+    output       CarryOut,
+    output [7:0] AdderOut
 );
 
     // code here

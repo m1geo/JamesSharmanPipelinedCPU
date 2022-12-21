@@ -12,7 +12,17 @@
 
 module r16b_updownload
 (
-    // ports here
+    input         clk,
+    input         clear,
+    input         reg_load, // active low
+    input         inc, // active high
+    input         dec, // active high
+    input  [15:0] AddrBusIn,
+    input  [15:0] XferBusIn,
+    
+    output [15:0] RegOut,
+    output        carry_n,
+    output        borrow_n
 );
 
     // code here

@@ -12,7 +12,15 @@
 
 module pipe_stage0
 (
-    // ports here
+    input        clk,
+    input  [7:0] MemData,
+    input        BusRequest,
+    input        FetchSuppress,
+    input        Flag5_PCRA_Flip,
+    
+    output [7:0] Pipe0Out,
+    output       Pipe0Out0_IncPCRA0,
+    output       Pipe0Out1_IncPCRA1
 );
 
     // code here

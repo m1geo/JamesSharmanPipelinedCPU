@@ -12,9 +12,40 @@
 
 module diode_matrix
 (
-    // ports here
+    input  [3:0] ALUOP,
+    output [3:0] LogicSelect,
+    output       ShiftSelectA,
+    output       ShiftSelectB,
+    output       CarrySelectA,
+    output       CarrySelectB
 );
-
-    // code here
-
+	
+    reg [7:0] r_temp;
+    
+    always @ (ALUOP) begin
+        case (ALUOP)
+            4'h1    : r_temp = 8'h10;
+            4'h2    : r_temp = 8'h20;
+            4'h3    : r_temp = 8'h0C;
+            4'h4    : r_temp = 8'h4C;
+            4'h5    : r_temp = 8'h80;
+            4'h6    : r_temp = 8'h40;
+            4'h7    : r_temp = 8'h83;
+            4'h8    : r_temp = 8'h43;
+            4'h9    : r_temp = 8'h0F;
+            4'hA    : r_temp = 8'h38;
+            4'hB    : r_temp = 8'h3E;
+            4'hC    : r_temp = 8'h36;
+            4'hD    : r_temp = 8'h33;
+            default : r_temp = 8'h0; // exhaustive list, not needed.
+        endcase
+    end
+    
+    // Assign values
+    assign LogicSelect = r_temp[3:0];
+    assign ShiftSelectA = r_temp[4];
+    assign ShiftSelectB = r_temp[5];
+    assign CarrySelectA = r_temp[6];
+    assign CarrySelectB = r_temp[7];
+    
 endmodule //end:diode_matrix

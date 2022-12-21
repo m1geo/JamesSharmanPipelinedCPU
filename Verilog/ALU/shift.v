@@ -12,7 +12,14 @@
 
 module shift
 (
-    // ports here
+	input        clk,
+	input        SelectA,
+	input        SelectB,
+	input        CarryIn,
+    input  [7:0] LHSIn,
+    
+    output       CarryOut,
+    output [7:0] LHSOut
 );
 
     // code here

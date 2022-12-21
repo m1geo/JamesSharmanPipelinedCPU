@@ -12,7 +12,15 @@
 
 module r16b_xfer
 (
-    // ports here
+    input         clk,
+    input         reg_xfer_load, // active low
+    input         reg_main_low_load, // active low
+    input         reg_main_high_load, // active low
+    input  [15:0] AddrBusIn,
+    input  [15:0] XferBusIn,
+    input   [7:0] MainBusIn,
+    
+    output [15:0] RegOut
 );
 
     // code here
