@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 // -----------------------------------------------------------------------------
-// Title   : Crude Test Bench for 8b General Purpose Register (MainBus/tb_r8b_gpr.v)
+// Title   : Crude Test Bench for Reset Circuit
 // Create  : Wed 21 Dec 22:07:34 GMT 2022
 //
 // Name    : JAM-1 8-bit Pipelined CPU in Verilog
@@ -8,7 +8,7 @@
 // GitHub  : https://github.com/m1geo/JamesSharmanPipelinedCPU
 // CPU Dsn : James Sharman; Video Series => https://youtu.be/3iHag4k4yEg
 //
-// Desc.   : Test Bench for 8 bit general purpose register
+// Desc.   : Test Bench for reset circuit
 // -----------------------------------------------------------------------------
 
 module tb_clk_rst();

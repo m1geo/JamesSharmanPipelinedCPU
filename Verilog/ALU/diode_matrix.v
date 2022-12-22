@@ -37,7 +37,7 @@ module diode_matrix
             4'hB    : r_temp = 8'h3E;
             4'hC    : r_temp = 8'h36;
             4'hD    : r_temp = 8'h33;
-            default : r_temp = 8'h0; // exhaustive list, not needed.
+            default : r_temp = 8'h0;
         endcase
     end
     
