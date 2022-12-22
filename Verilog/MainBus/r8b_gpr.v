@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Title   : 8b General Purpose Register (MainBus/reg_8bit.v)
+// Title   : 8b General Purpose Register (MainBus/r8b_gpr.v)
 // Create  : Tue 20 Dec 22:32:12 GMT 2022
 //
 // Name    : JAM-1 8-bit Pipelined CPU in Verilog
@@ -9,9 +9,10 @@
 //
 // Desc.   : 8 bit general purpose register
 //         : also used for constant register
+//         : PCB uses 74HCT574
 // -----------------------------------------------------------------------------
 
-module reg_8bit
+module r8b_gpr
 (
     input        clk,
     input        reg_load, // active low
@@ -20,6 +21,18 @@ module reg_8bit
     output [7:0] RegOut
 );
 
-    // code here
+	// define register
+	reg [7:0] data;
+	
+	// update register on rising clock, iff load is low.
+	always @ (posedge clk) begin
+		if (!reg_load) begin
+			data <= RegIn;
+		end
+	end
+	
+	// always expose the register data. 
+	// asserts handled outside of the register on FPGA.
+	assign RegOut = data;
 
-endmodule //end:reg_8bit
+endmodule //end:r8b_gpr

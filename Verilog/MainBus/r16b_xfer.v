@@ -8,6 +8,7 @@
 // CPU Dsn : James Sharman; Video Series => https://youtu.be/3iHag4k4yEg
 //
 // Desc.   : 16 bit transfer register
+//         : PCB uses 74HCT574 (with lots of extra stuff)
 // -----------------------------------------------------------------------------
 
 module r16b_xfer
@@ -16,13 +17,28 @@ module r16b_xfer
     input         reg_xfer_load, // active low
     input         reg_main_low_load, // active low
     input         reg_main_high_load, // active low
-    input  [15:0] AddrBusIn,
     input  [15:0] XferBusIn,
     input   [7:0] MainBusIn,
     
     output [15:0] RegOut
 );
 
-    // code here
+    // define register
+	reg [15:0] data;
+	
+	// update register on rising clock
+	always @ (posedge clk) begin
+		if (!reg_xfer_load) begin
+			data <= XferBusIn; // load 16b transfer
+		end else if (!reg_main_high_load) begin
+			data <= {MainBusIn[7:0], data[7:0]}; // load 8b main high
+		end else if (!reg_main_low_load) begin
+			data <= {data[15:8], MainBusIn[7:0]}; // load 8b main low
+		end
+	end
+	
+	// always expose the register data. 
+	// asserts handled outside of the register on FPGA.
+	assign RegOut = data;
 
 endmodule //end:r16b_xfer
