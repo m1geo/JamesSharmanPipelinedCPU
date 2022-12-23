@@ -33,8 +33,8 @@ HDR="""module pipeline_rom_XX
 (
     input         clk,
     input         en, // active high
-    input  [14:0] addr;
-    output  [7:0] dout;
+    input  [14:0] addr,
+    output  [7:0] dout
 );
 
     (*rom_style = "block" *) reg [7:0] d;
