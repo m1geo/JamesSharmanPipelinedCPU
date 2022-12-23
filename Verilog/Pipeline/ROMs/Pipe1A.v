@@ -1,16 +1,16 @@
 // -----------------------------------------------------------------------------
-// Title   : Pipe1A (Pipeline/roms/Pipe1A.v)
-// Create  : ???
+// Title   : Pipeline ROM 1A (Pipeline/roms/Pipe1A.v)
+// Create  : Thu, Dec 22, 2022  5:55:34 PM
 //
 // Name    : JAM-1 8-bit Pipelined CPU in Verilog
 // Author  : George Smart, M1GEO.  https://www.george-smart.co.uk
 // GitHub  : https://github.com/m1geo/JamesSharmanPipelinedCPU
 // CPU Dsn : James Sharman; Video Series => https://youtu.be/3iHag4k4yEg
 //
-// Desc.   : Pipe1A
+// Desc.   : Pipeline ROM 1A
 // -----------------------------------------------------------------------------
 
-module pipeline_rom_Pipe1A
+module pipeline_rom_1a
 (
     input         clk,
     input         en, // active high
@@ -8218,4 +8218,4 @@ module pipeline_rom_Pipe1A
                             endcase
     end //end:always_posedge_clk
     assign dout = d;
-endmodule //end:pipeline_rom_Pipe1A
+endmodule //end:pipeline_rom_1a
