@@ -30,6 +30,34 @@ module flags
     output       CarrySelectBDelayed
 );
 
-    // code here
+	// Overflow - registered below
+	wire Overflow = ((LHSIn[7] ^ DataIn[7]) & (DataIn[7] ^ RHSIn[7]));
+	
+	// Zero Flag - unregistered
+	assign ZeroFlag = ~(| DataIn); // NOR
+
+    // Register Values
+    reg regCarrySelectA = 0;
+    reg regCarrySelectB = 0;
+    reg regOverflow = 0;
+    reg regSign = 0;
+    reg regArithCarry = 0;
+    reg regLogicCarry = 0;
+    
+	always @ (posedge clk) begin
+    	regCarrySelectA <= CarrySelectA;
+    	regCarrySelectB <= CarrySelectB;
+    	regOverflow <= Overflow;
+    	regSign <= DataIn[7];
+    	regArithCarry <= ArithCarryIn;
+    	regLogicCarry <= LogicCarryIn;
+	end
+	
+	assign CarrySelectADelayed = regCarrySelectA;
+	assign CarrySelectBDelayed = regCarrySelectB;
+	assign OverflowFlag = regOverflow;
+	assign SignFlag = regSign;
+	assign ArithCarryFlag = regArithCarry;
+	assign LogicCarryFlag = regLogicCarry;
 
 endmodule //end:flags

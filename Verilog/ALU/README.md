@@ -4,6 +4,6 @@ The table below shows the status of the different files in this folder:
 | ------ | ------ | ------ | ------ |
 | adder.v | Adder | ✅ | ❌ |
 | diode_matrix.v | ALU-OP Diode Matrix | ✅ | ✅ |
-| flags.v | FLAGS | ❌ | ❌ |
+| flags.v | FLAGS | ✅ | ❌ |
 | logic.v | ALU RHS Logic Unit | ✅ | ❌ |
 | shift.v | ALU LHS Shift Unit | ✅ | ❌ |
