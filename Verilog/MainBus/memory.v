@@ -13,7 +13,15 @@
 //         : MemBridge_Assert is /OE for MainBus Bus
 //         : MemBridge_Direction is /OE for MemData Bus
 //         :  \=> also drives /OE for RAM/ROM ICs onto MemData Bus
+//         :
+//         : Based on Xilinx Single-Port Block RAM Write-First Mode Verilog Example
 // -----------------------------------------------------------------------------
+
+/*
+
+NOT FINISHEED YET - NEEDS CONTROL LINES ADDING!
+
+*/
 
 module memory
 (
@@ -29,6 +37,26 @@ module memory
     output  [7:0] MainBusOut
 );
 
-    // code here
+	// Input MUX
+	wire [7:0] di = (xxx) ? MemDataIn : MainBusIn;
+	
+	// RAM array (64KBytes)
+	reg [7:0] RAM [65535:0];
+	
+	// Output Register
+	reg [7:0] dout;
+	assign MemDataOut = dout;
+	assign MainBusOut = dout;
+	
+	// Memory BRAM
+    always @(posedge clk) begin
+        if (en) begin
+            if (we) begin
+                RAM[AddrBus] <= di;
+                dout <= di;
+            end else  // end:if_we
+                dout <= RAM[AddrBus];
+        end // end:if_en
+    end // end:always_posedge_clk
 
 endmodule //end:memory
